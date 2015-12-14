@@ -11,7 +11,15 @@ package javaapplication1;
  */
 public class JavaApplication1 {
 
-    public static int[][] board;
+    public static int[][] board = { { 0, 2, 6, 0, 0, 0, 8, 1, 0 },
+				 { 3, 0, 0, 7, 0, 8, 0, 0, 6 }, 
+				 { 4, 0, 0, 0, 5, 0, 0, 0, 7 },
+				 { 0, 5, 0, 1, 0, 7, 0, 9, 0 }, 
+				 { 0, 0, 3, 9, 0, 5, 1, 0, 0 },	
+				 { 0, 4, 0, 3, 0, 2, 0, 5, 0 }, 
+				 { 1, 0, 0, 0, 3, 0, 0, 0, 2 },
+				 { 5, 0, 0, 2, 0, 4, 0, 0, 9 }, 
+				 { 0, 3, 8, 0, 0, 0, 4, 6, 0 } };;
     public static int boardSize = 9;
     countClass count = new countClass();
     
@@ -20,53 +28,23 @@ public class JavaApplication1 {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        board = new int[boardSize][boardSize];
+        //board = new int[boardSize][boardSize];
+        
         JavaApplication1 a = new JavaApplication1();
-        initializeBoard(board);
-        showBoard(board);
+        //initializeBoard(board);
+        //showBoard(board);
         if(a.Solver(board))
         {
             System.out.println("sudoku solved");
+            showBoard(board);
+        }
+        else
+        {
+            System.out.println("sudoku failed");
         }
         
     }
-    public static void initializeBoard(int[][] board)
-    {
-        for(int i = 0;i < 9;i++)
-	{
-		for(int j = 0;j < 9;j++)
-		{
-				board[i][j] = 0;
-				if(i == 0 && j == 0)board[i][j] = 7;
-				if(i == 0 && j == 1)board[i][j] = 9;
-				if(i == 0 && j == 6)board[i][j] = 3;
-				if(i == 1 && j == 5)board[i][j] = 6;
-				if(i == 1 && j == 6)board[i][j] = 9;
-				if(i == 2 && j == 0)board[i][j] = 8;
-				if(i == 2 && j == 4)board[i][j] = 3;
-				if(i == 2 && j == 7)board[i][j] = 7;
-				if(i == 2 && j == 8)board[i][j] = 6;
-				if(i == 3 && j == 5)board[i][j] = 5;
-				if(i == 3 && j == 8)board[i][j] = 2;
-				if(i == 4 && j == 2)board[i][j] = 5;
-				if(i == 4 && j == 3)board[i][j] = 4;
-				if(i == 4 && j == 4)board[i][j] = 1;
-				if(i == 4 && j == 5)board[i][j] = 8;
-				if(i == 4 && j == 6)board[i][j] = 7;
-				if(i == 5 && j == 0)board[i][j] = 4;
-				if(i == 5 && j == 3)board[i][j] = 7;
-				if(i == 6 && j == 0)board[i][j] = 6;
-				if(i == 6 && j == 1)board[i][j] = 1;
-				if(i == 6 && j == 4)board[i][j] = 9;
-				if(i == 6 && j == 8)board[i][j] = 8;
-				if(i == 7 && j == 2)board[i][j] = 2;
-				if(i == 7 && j == 3)board[i][j] = 3;
-				if(i == 8 && j == 2)board[i][j] = 9;
-				if(i == 8 && j == 7)board[i][j] = 5;
-				if(i == 8 && j == 8)board[i][j] = 4;
-		}
-	}
-}
+   
     public static void showBoard(int[][] board)
 {
 for(int i = 0;i < 9;i++)
@@ -86,32 +64,47 @@ for(int i = 0;i < 9;i++)
     
     public boolean Solver(int[][] board)
     {
-        S
-        if(!findUnassignedLocation(board, count))
+        
+        /*if(!findUnassignedLocation(board, count))
         {
-            //System.out.println("waarden zijn: "+ count.i + ", voor de rij, en " + count.j + " voor de kolom.");
             return true;
         }
-        //System.out.println("on row " + count.i + " and column " + count.j);
         
         for(int number = 1;number < boardSize;number++)
         {
             if(isSafe(board, count.i, count.j, number))
             {
                 board[count.i][count.j] = number;
-                showBoard(board);
                 if(Solver(board))
                 {
-                    //System.out.println("waarden zijn: "+ count.i + ", voor de rij, en " + count.j + " voor de kolom.");
+                    
                     return true;
                 }
                 
                 board[count.i][count.j] = 0;
-                //System.out.println("waarden zijn: "+ count.i + ", voor de rij, en " + count.j + " voor de kolom.");
             }
         }
-        //System.out.println("waarden zijn: "+ count.i + ", voor de rij, en " + count.j + " voor de kolom, fout tegengekomen.");
-        return false;
+        return false;*/
+        int row =  count.i;
+	int col =  count.j;
+
+		if (!findUnassignedLocation(board, count)) {
+			return true;
+		}
+		int num;
+		for (num = 1; num <= 9; num++) {
+			if (isSafe(board, count.i, count.j, num)) {
+				int rowValue = count.i, colValue = count.j;
+				board[rowValue][colValue] = num;
+				if (Solver(board))
+                                {
+                                    
+					return true;
+                                }
+				board[rowValue][colValue] = 0;
+			}
+		}
+		return false;
     }
     
     public boolean findUnassignedLocation(int[][] board, countClass count)
@@ -122,46 +115,54 @@ for(int i = 0;i < 9;i++)
             {
                 if(board[i][j] == 0)
                 {
-                    if(j == 6) System.out.println("ben wel bij 5 gekomen.");
                     count.i = i;
                     count.j = j;
-                    //System.out.println("findlocation returned row" +count.i+ " column "+ count.j);
                     return true;
                 }
             }
         }
         
         return false;
+       
     }
     
-    public boolean isSafe(int[][] puzzle, int row, int column, int number)
+    public boolean isSafe(int[][] grid, int rowValue, int colValue, int num)
     {
-        int i=0;
-        int sectorRow = 3*(row/3);
-        int sectorCol = 3*(column/3);
-        int row1 = (row+2)%3;
-        int row2 = (row+4)%3;
-        int col1 = (column+2)%3;
-        int col2 = (column+4)%3;
-        
-            for(int x = 0; x < boardSize;x++)
-            {
-                if(board[row][x] == number)
-                {
-                    return false;
-                }
-                if(board[x][column] == number){
-                    return false;
-                }
-            }
-            
-            
-            if(puzzle[row1+sectorRow][col1+sectorCol] == number) return false;
-            if(puzzle[row2+sectorRow][col1+sectorCol] == number) return false;
-            if(puzzle[row1+sectorRow][col2+sectorCol] == number) return false;
-            if(puzzle[row2+sectorRow][col2+sectorCol] == number) return false;
-        
-        return true;
+       if (!usedInRow(grid, rowValue, num)
+				&& !usedInCol(grid, colValue, num)
+				&& !usedInBox(grid, rowValue - rowValue % 3, colValue
+						- colValue % 3, num)) {
+			return true;
+		}
+		return false;
     }
+    
+    private static boolean usedInBox(int[][] grid, int rowValue, int colValue, int num) {
+		int x, y;
+		for (x = 0; x < 3; x++) {
+			for (y = 0; y < 3; y++) {
+				if (grid[rowValue + x][colValue + y] == num)
+					return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean usedInCol(int[][] grid, int colValue, int num) {
+		int x;
+		for (x = 0; x < 9; x++) {
+			if (grid[x][colValue] == num)
+				return true;
+		}
+		return false;
+	}
+        private static boolean usedInRow(int[][] grid, int rowValue, int num) {
+		int y;
+		for (y = 0; y < 9; y++) {
+			if (grid[rowValue][y] == num)
+				return true;
+		}
+		return false;
+	}
     
 }
